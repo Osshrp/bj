@@ -5,13 +5,13 @@ require_relative 'bank'
 
 class Game
 
-  attr_reader :user, :dealer, :deck
+  attr_reader :user, :dealer, :deck, :bank
 
   def initialize(username)
-    deck = Deck.new
-    bank = Bank.new
-    user = User.new(username)
-    dealer = Dealer.new
+    @deck = Deck.new
+    @bank = Bank.new
+    @user = User.new(username)
+    @dealer = Dealer.new
     give_up_cards user
     give_up_cards dealer
   end
