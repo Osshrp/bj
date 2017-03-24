@@ -1,30 +1,34 @@
 class Player
-  attr_reader :cards
-
+  attr_accessor :cards, :points
   def initialize
-    # @cards = []
-    @points = 0
+    @cards = []
   end
 
-  def take_cards(cards)
-    cards.size == 2 ? @cards ||= cards : @cards << cards.first
+  def take_cards(cards_array)
+    cards_array.size == 2 ? self.cards = cards_array : self.cards << cards_array.first
+    count_points
   end
 
   def count_points
-    @cards.map do |card|
+    self.points = 0
+    aces = 0
+    cards.map do |card|
       if card.rank > 10
-        @points += 10
+        self.points += 10
       elsif card.rank == 1
         aces += 1
       else
-        @points += card.rank
+        self.points += card.rank
       end
     end
-    ace(aces) if aces > 0
+    self.points += ace_points(aces) if aces > 0
+    points
   end
 
-  def ace(aces)
-    if aces == 1 && (@points + 11) <= 21
+  protected
+
+  def ace_points(aces)
+    if aces == 1 && (points + 11) <= 21
       return 11
     else
       return 1
