@@ -12,8 +12,12 @@ class Game
     @bank = Bank.new
     @user = User.new(username)
     @dealer = Dealer.new
-    give_up_cards(@user)
-    give_up_cards(@dealer)
+    start_game
+  end
+
+  def start_game
+    give_up_cards(user)
+    give_up_cards(dealer)
   end
 
   def give_up_cards(player)
@@ -22,34 +26,20 @@ class Game
   end
 
   def winner_definition
-    puts "!!!!!!!!dealer.points == #{dealer.points}"
-    puts "!!!!!!!!!user.points == #{user.points}"
-    if dealer.points < 21 || user.points < 21
-      if dealer.points > user.points
-        return dealer
-      else
-        return user
-      end
-    end
-
-    if dealer.points == 21
-      return dealer
-    elsif user.points == 21
-      return user
-    end
-
-    if user.points > 21 && dealer.points < 21
-      return dealer
+    players = [dealer, user]
+    players.map! { |player| player if (1..21).cover?(player.points) }
+    players.compact!
+    return nil if players.size.zero?
+    return players.first if players.size == 1
+    return nil if players.first.points == players.last.points
+    if players.first.points > players.last.points
+      players.first
     else
-      return user
-    end
-
-    if user.points == dealer.points
-      nill
+      players.last
     end
   end
 
   def count_bank(winner)
-    bank.increase_bank(winner.type)
+    bank.take_prise(winner.type)
   end
 end

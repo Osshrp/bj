@@ -11,15 +11,14 @@ class Dealer < Player
   end
 
   def turn(deck)
-    if points < 17 || do_next_turn?
+    if (points < 17 || do_next_turn?) && cards.size == 2
       take_cards(deck.give_cards(1))
-      count_points
     end
   end
 
   def do_next_turn?
     hash = { 17 => :seventeen, 18 => :eighteen, 19 => :nineteen }
-    send(hash[points])
+    send(hash[points]) if hash.key?(points)
   end
 
   def open_cards
