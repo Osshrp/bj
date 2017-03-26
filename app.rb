@@ -78,11 +78,11 @@ class App
 
   def more_card(game)
     game.user.take_cards(game.deck.give_cards(1)) if game.user.cards.size == 2
-    if game.user.cards.size == 3 && game.dealer.cards.size == 3
-      open(game)
-    else
-      game.dealer.turn(game.deck)
-    end
+    puts "user.cards.size #{game.user.cards.size}"
+    puts "dealer.cards.size #{game.dealer.cards.size}"
+    check_and_open(game)
+    game.dealer.turn(game.deck)
+    check_and_open(game)
   end
 
   def open(game)
@@ -110,6 +110,10 @@ class App
 
   def is_open?
     open_flag
+  end
+
+  def check_and_open(game)
+    open(game) if game.user.cards.size == 3 && game.dealer.cards.size == 3
   end
 end
 
