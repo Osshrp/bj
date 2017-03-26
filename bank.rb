@@ -31,6 +31,10 @@ class Bank
     end
   end
 
+  def player_sum(type)
+    send("#{type}_sum")
+  end
+
   private
 
   attr_writer :user_sum, :dealer_sum, :bank_sum

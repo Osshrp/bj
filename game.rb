@@ -12,6 +12,7 @@ class Game
     @bank = Bank.new
     @user = User.new(username)
     @dealer = Dealer.new
+    @players = [ @user, @dealer ]
     start_game
   end
 
@@ -26,20 +27,29 @@ class Game
   end
 
   def winner_definition
-    players = [dealer, user]
-    players.map! { |player| player if (1..21).cover?(player.points) }
-    players.compact!
-    return nil if players.size.zero?
-    return players.first if players.size == 1
-    return nil if players.first.points == players.last.points
-    if players.first.points > players.last.points
-      players.first
+    happy_players = players.select { |player| (1..21).cover?(player.points) }
+    return nil if happy_players.size.zero?
+    return happy_players.first if happy_players.size == 1
+    return nil if happy_players.first.points == happy_players.last.points
+    if happy_players.first.points > happy_players.last.points
+      happy_players.first
     else
-      players.last
+      happy_players.last
     end
   end
 
   def count_bank(winner)
     bank.take_prise(winner.type)
   end
+
+  def check_balance
+    player_with_zero =  players.select { |player| bank.player_sum(player.type).zero? }
+    if player_with_zero.first
+      puts "У игрока #{player_with_zero.first.name} закончились деньги. Game over"
+      exit
+    end
+  end
+
+  private
+  attr_accessor :players
 end

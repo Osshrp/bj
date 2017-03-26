@@ -35,6 +35,7 @@ class App
       if is_open? && game.winner_definition
         game.count_bank(winner(game))
         puts "Победитель :#{winner(game).name}!!!!"
+        game.check_balance
       elsif is_open?
         puts "Ничья"
       end
