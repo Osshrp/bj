@@ -14,21 +14,19 @@ class Bank
   def make_bet(type)
     if type == :user
       self.user_sum -= 10
-      self.bank_sum += 10
     else
       self.dealer_sum -= 10
-      self.bank_sum += 10
     end
+    self.bank_sum += 10
   end
 
   def take_prise(type)
     if type == :user
       self.user_sum += bank_sum
-      self.bank_sum = 0
     else
       self.dealer_sum += bank_sum
-      self.bank_sum = 0
     end
+    self.bank_sum = 0
   end
 
   def player_sum(type)
